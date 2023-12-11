@@ -34,12 +34,17 @@ uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const u
   tmp = _mm256_setzero_si256();
   for (int i = 0; i < number - 4 + 1; i += 4) {
     data = _mm256_load_si256(reinterpret_cast<const __m256i *> (&array[i]));
-     tmp = _mm256_add_epi64(data, tmp);
+    tmp  = _mm256_add_epi64(data, tmp);
   }
 
-   uint64_t res = _mm256_extract_epi64(tmp,0)+_mm256_extract_epi64(tmp,1)+_mm256_extract_epi64(tmp,2)+_mm256_extract_epi64(tmp,3);
+  uint64_t res = (
+    _mm256_extract_epi64(tmp, 0) +
+    _mm256_extract_epi64(tmp, 1) +
+    _mm256_extract_epi64(tmp, 2) +
+    _mm256_extract_epi64(tmp, 3)
+  );
 
-   return res;
+  return res;
 }
 
 /**
@@ -61,11 +66,16 @@ uint64_t aggregate_strided_gather_avx256(const uint64_t* array, uint64_t number,
   for (int j = 0; j < number; j += 4 * stride) {
     for (int i = 0; i < stride; i++) {
       data = _mm256_i32gather_epi64(reinterpret_cast<const long long int *> (&array[j + i]), gatherindex, 8);
-      tmp = _mm256_add_epi64(data, tmp);
+      tmp  = _mm256_add_epi64(data, tmp);
     }
   }
 
-  uint64_t res = _mm256_extract_epi64(tmp,0)+_mm256_extract_epi64(tmp,1)+_mm256_extract_epi64(tmp,2)+_mm256_extract_epi64(tmp,3);
+  uint64_t res = (
+    _mm256_extract_epi64(tmp, 0) +
+    _mm256_extract_epi64(tmp, 1) +
+    _mm256_extract_epi64(tmp, 2) +
+    _mm256_extract_epi64(tmp, 3)
+  );
 
   return res;
 }
@@ -85,12 +95,17 @@ uint64_t aggregate_strided_set_avx512(const uint64_t* array, uint64_t number, co
 
   for (int j = 0; j < number; j += 4 * stride) {
     for (int i = 0; i < stride; i++) {
-			data = _mm256_set_epi64x(array[j+i+3*stride],array[j+i+2*stride],array[j+i+stride],array[j+i]);
-      tmp = _mm256_add_epi64(data, tmp);
+      data = _mm256_set_epi64x(array[j+i+3*stride],array[j+i+2*stride],array[j+i+stride],array[j+i]);
+      tmp  = _mm256_add_epi64(data, tmp);
     }
   }
 
-  uint64_t res = _mm256_extract_epi64(tmp,0)+_mm256_extract_epi64(tmp,1)+_mm256_extract_epi64(tmp,2)+_mm256_extract_epi64(tmp,3);
+  uint64_t res = (
+    _mm256_extract_epi64(tmp, 0) +
+    _mm256_extract_epi64(tmp, 1) +
+    _mm256_extract_epi64(tmp, 2) +
+    _mm256_extract_epi64(tmp, 3)
+  );
 
   return res;
 }
