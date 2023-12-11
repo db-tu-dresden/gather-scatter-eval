@@ -69,6 +69,7 @@ bool benchmark(measures* res, uint64_t correct_result, const uint64_t* values, u
 
 
 int main(int argc, char** argv) {
+	cout << "You are running: " __FILE__ << endl;
 
     if (argc < 2) {
         cout <<"Data Size as input expected!"<<endl;
