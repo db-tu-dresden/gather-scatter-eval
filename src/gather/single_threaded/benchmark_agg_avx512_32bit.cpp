@@ -163,6 +163,7 @@ int main(int argc, char** argv) {
 
 
 
+	cerr << "freeing array!" << endl;
     result_file.close();
     free(array_32);
 

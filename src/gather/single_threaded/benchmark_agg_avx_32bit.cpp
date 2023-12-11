@@ -168,6 +168,7 @@ int main(int argc, char** argv) {
                                                                      seti.mis<<" "<<
                                                                      seti.throughput<<endl;    }
 
+	cerr << "freeing array!" << endl;
     result_file.close();
 
     free(array_32);
