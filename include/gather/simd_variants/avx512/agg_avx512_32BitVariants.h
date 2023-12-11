@@ -6,31 +6,31 @@
 
 /**
  * @brief scalar variant
- * 
- * @param array 
- * @param number 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @return uint64_t
  */
 
 uint64_t aggregate_scalar(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
         uint64_t res = 0;
         for (uint64_t i = 0; i < number; i++)
             res += array[i];
-     return res; 
+     return res;
 }
 
 /**
  * @brief linear load avx512 variant
- * 
- * @param array 
- * @param number 
- * @return int32_t 
+ *
+ * @param array
+ * @param number
+ * @return int32_t
  */
 
 uint64_t aggregate_linear_avx512(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
   __m512i tmp, data;
   uint64_t r = 0;
-  
+
   tmp = _mm512_setzero_si512();
   for (int i = 0; i < number - 16 + 1; i += 16) {
     data = _mm512_load_epi32(reinterpret_cast<const __m512i *> (&array[i]));
@@ -42,11 +42,11 @@ uint64_t aggregate_linear_avx512(const uint32_t* array, uint64_t number, const u
 
 /**
  * @brief avx512 strided access variant using gather instruction
- * 
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 
 uint64_t aggregate_strided_gather_avx512_512(const uint32_t* array, uint64_t number, const uint32_t stride) {
@@ -75,11 +75,11 @@ uint64_t aggregate_strided_gather_avx512_512(const uint32_t* array, uint64_t num
 
 /**
  * @brief avx512 strided access variant (stride size 512) using gather instruction
- * 
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 
 uint64_t aggregate_strided_gather_avx512(const uint32_t* array, uint64_t number, const uint32_t stride) {
@@ -102,11 +102,11 @@ uint64_t aggregate_strided_gather_avx512(const uint32_t* array, uint64_t number,
 
 /**
  * @brief avx512 strided access variant using set instruction
- *  
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 uint64_t aggregate_strided_set_avx512(const uint32_t* array, uint64_t number, const uint32_t stride) {
   __m512i tmp, data;

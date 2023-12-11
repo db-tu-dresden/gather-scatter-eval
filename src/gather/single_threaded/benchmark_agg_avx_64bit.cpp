@@ -6,7 +6,7 @@
 #include "immintrin.h"
 #include<fstream>
 #include <string.h>
-#include <math.h> 
+#include <math.h>
 #include <functional>
 
 #include "gather/simd_variants/avx/agg_avx_64BitVariants.h"
@@ -17,11 +17,11 @@
 using namespace std;
 
 struct measures {
-    uint64_t result; 
+    uint64_t result;
     double duration;
     double throughput;
     double mis;
-} scalar, linear, gather, seti; 
+} scalar, linear, gather, seti;
 
 
 template <typename T>
@@ -50,7 +50,7 @@ bool benchmark(measures* res, uint64_t correct_result, const uint64_t* values, u
 
     uint64_t duration = 0;
     for (int i=0; i<ITERATIONS; i++) {
-        // flush all caches and TLB 
+        // flush all caches and TLB
         // clean start setting
         void flush_cache_all(void);
         void flush_tlb_all(void);
@@ -82,13 +82,13 @@ int main(int argc, char** argv) {
     // 26 --> 67 million integers --> 4GB
     uint64_t number_of_values = pow(2, p);
 
-    
+
     // define max stride size (power of 2)
     size_t max_stride = 15;
 
     //compute GB for number of values
     double GB = (((double)number_of_values*sizeof(uint64_t)/(double)1024)/(double)1024)/(double)1024;
-  
+
 
     /**
      * allocate memory and fill with random numbers
@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
     }
     generate_random_values(array_64, number_of_values);
     uint32_t correct = aggregate_scalar(array_64, number_of_values);
-    cout <<"Generation done."<<endl; 
+    cout <<"Generation done."<<endl;
 
     /**
      * run several benchmarks on generated data
@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
         else {
             cout <<"Gather - Stride with Size "<<stride_size<<" failed"<<endl;
         }
-        
+
         // set instruction
          if (benchmark(&seti, correct, array_64, number_of_values, stride_size, GB, &aggregate_strided_set_avx512)) {
             cout <<"Set - Stride with Size "<<stride_size<<" done"<<endl;
@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
                                                                      linear.mis<<" "<<
                                                                      linear.throughput<<" "<<
                                                                      gather.mis<<" "<<
-                                                                     gather.throughput<<" "<< 
+                                                                     gather.throughput<<" "<<
                                                                      seti.mis<<" "<<
                                                                      seti.throughput<<endl;    }
 
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 
     free(array_64);
 
-  
+
 
   return 0;
 }

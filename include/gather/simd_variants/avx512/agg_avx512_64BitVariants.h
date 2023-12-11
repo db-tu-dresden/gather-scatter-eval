@@ -6,48 +6,48 @@
 
 /**
  * @brief scalar variant
- * 
- * @param array 
- * @param number 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @return uint64_t
  */
 
 uint64_t aggregate_scalar(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
         uint64_t res = 0;
         for (uint64_t i = 0; i < number; i++)
             res += array[i];
-     return res; 
+     return res;
 }
 
 /**
  * @brief linear load avx512 variant
- * 
- * @param array 
- * @param number 
- * @return int64_t 
+ *
+ * @param array
+ * @param number
+ * @return int64_t
  */
 
 uint64_t aggregate_linear_avx512(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
   __m512i tmp, data;
   uint64_t r = 0;
-  
+
   tmp = _mm512_setzero_si512();
   for (int i = 0; i < number - 8 + 1; i += 8) {
     data = _mm512_load_epi64(reinterpret_cast<const __m512i *> (&array[i]));
     tmp = _mm512_add_epi64(data, tmp);
   }
-  
+
   return _mm512_reduce_add_epi64(tmp );
 }
 
 
 /**
  * @brief avx512 strided access variant using gather instruction
- * 
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 
 uint64_t aggregate_strided_gather_avx512(const uint64_t* array, uint64_t number, const uint32_t stride) {
@@ -77,7 +77,7 @@ uint64_t aggregate_indexed_gather_avx512_64(const uint64_t* array, uint64_t numb
   tmp = _mm512_setzero_si512();
 
   const __m256i gatherindex = _mm256_set_epi32(7 * stride, 6 * stride, 5 * stride, 4 * stride, 3 * stride, 2 * stride, stride, 0);
-    
+
 
   for (int j = 0; j < number; j += 8 * stride) {
     __m256i positions = _mm256_set_epi32(11, 13, 17, 19, 23, 29, 31, 37);
@@ -114,7 +114,7 @@ uint64_t aggregate_indexed_gather_avx512(const uint64_t* array, uint64_t number,
   const __m256i gatherindex = _mm256_set_epi32(7 * stride_size, 6 * stride_size, 5 * stride_size, 4 * stride_size, 3 * stride_size, 2 * stride_size, stride_size, 0);
   const __m256i fixed1 = _mm256_set_epi32(stride_size-1, stride_size-1, stride_size-1, stride_size-1, stride_size-1, stride_size-1, stride_size-1, stride_size-1);
   const __m256i fixed2 = _mm256_set_epi32(f+1, f+3, f+5, f+9, f+11, f+13, f+15, f+17);
-    
+
 
   for (int j = 0; j < number; j += 8 * stride_size) {
     __m256i positions = _mm256_set_epi32(f+1, f+3, f+5, f+9, f+11, f+13, f+15, f+17);
@@ -132,11 +132,11 @@ uint64_t aggregate_indexed_gather_avx512(const uint64_t* array, uint64_t number,
 
 /**
  * @brief avx512 strided access variant using set instruction
- *  
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 uint64_t aggregate_strided_set_avx512(const uint64_t* array, uint64_t number, const uint32_t stride) {
   __m512i tmp, data;

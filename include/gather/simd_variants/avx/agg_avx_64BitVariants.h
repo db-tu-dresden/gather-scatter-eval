@@ -6,31 +6,31 @@
 
 /**
  * @brief scalar variant
- * 
- * @param array 
- * @param number 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @return uint64_t
  */
 
 uint64_t aggregate_scalar(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
         uint64_t res = 0;
         for (uint64_t i = 0; i < number; i++)
             res += array[i];
-     return res; 
+     return res;
 }
 
 /**
  * @brief linear load avx512 variant
- * 
- * @param array 
- * @param number 
- * @return int32_t 
+ *
+ * @param array
+ * @param number
+ * @return int32_t
  */
 
 uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
   __m256i tmp, data;
   uint64_t r = 0;
-  
+
   tmp = _mm256_setzero_si256();
   for (int i = 0; i < number - 4 + 1; i += 4) {
     data = _mm256_load_si256(reinterpret_cast<const __m256i *> (&array[i]));
@@ -44,11 +44,11 @@ uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const u
 
 /**
  * @brief avx256 strided access variant  using gather instruction
- * 
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 
 uint64_t aggregate_strided_gather_avx256(const uint64_t* array, uint64_t number, const uint32_t stride) {
@@ -72,11 +72,11 @@ uint64_t aggregate_strided_gather_avx256(const uint64_t* array, uint64_t number,
 
 /**
  * @brief avx/avx2 strided access variant using set instruction
- *  
- * @param array 
- * @param number 
- * @param stride 
- * @return uint64_t 
+ *
+ * @param array
+ * @param number
+ * @param stride
+ * @return uint64_t
  */
 uint64_t aggregate_strided_set_avx512(const uint64_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;

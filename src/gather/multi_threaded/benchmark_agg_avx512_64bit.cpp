@@ -6,7 +6,7 @@
 #include "immintrin.h"
 #include<fstream>
 #include <string.h>
-#include <math.h> 
+#include <math.h>
 #include <functional>
 #include <map>
 #include <future>
@@ -23,11 +23,11 @@
 using namespace std;
 
 struct measures {
-    uint64_t result; 
+    uint64_t result;
     double duration;
     double throughput;
     double mis;
-}; 
+};
 
 typedef function<uint64_t(const uint64_t*,uint64_t, const uint32_t)> benchmark_function;
 
@@ -115,13 +115,13 @@ void generate_random_values(T* array, uint64_t number) {
 bool benchmark(multithreaded_measures* res, uint64_t correct_result, const uint64_t* values, uint64_t n, const uint32_t stride, double GB, benchmark_function func) {
     for ( size_t core_cnt = 1; core_cnt <= MAX_CORES; core_cnt *= 2 ) { /* Run with 1, 2, 4, ... MAX_CORES cores */
         std::vector< std::thread* > pool;
-        
+
         uint64_t* tmp_res = (uint64_t*) aligned_alloc( 64, core_cnt * sizeof( uint64_t) );
         double* tmp_dur   = (double*)   aligned_alloc( 64, core_cnt * sizeof( double )  );
         bool* ready_vec = (bool*) malloc( core_cnt * sizeof( bool ) );
 
         auto magic = [core_cnt, values, n, stride] ( const uint64_t tid, uint64_t* local_result, double* local_duration, bool* local_ready, std::shared_future< void >* sync_barrier, benchmark_function local_func ) {
-            // flush all caches and TLB 
+            // flush all caches and TLB
             // clean start setting
             void flush_cache_all(void);
             void flush_tlb_all(void);
@@ -134,7 +134,7 @@ bool benchmark(multithreaded_measures* res, uint64_t correct_result, const uint6
             local_result[ tid ] = local_func(values + my_offset, my_value_count, stride);
             auto end = std::chrono::high_resolution_clock::now();
 
-            local_duration[ tid ] += std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();        
+            local_duration[ tid ] += std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();
         };
 
         double averaged_duration = 0.0;
@@ -160,10 +160,10 @@ bool benchmark(multithreaded_measures* res, uint64_t correct_result, const uint6
                 }
             }
             p.set_value(); /* Start execution by notifying on the void promise */
-            std::for_each( pool.begin(), pool.end(), 
+            std::for_each( pool.begin(), pool.end(),
                 []( std::thread* t ) {
-                     t->join(); 
-                     delete t; } 
+                     t->join();
+                     delete t; }
             ); /* Join and delete threads as soon as they are finished */
             pool.clear();
             double iteration_duration = 0.0;
@@ -215,13 +215,13 @@ int main(int argc, char** argv) {
     // 26 --> 67 million integers --> 4GB
     uint64_t number_of_values = pow(2, p);
 
-    
+
     // define max stride size (power of 2)
     size_t max_stride = 15;
 
     //compute GB for number of values
     double GB = (((double)number_of_values*sizeof(uint64_t)/(double)1024)/(double)1024)/(double)1024;
-  
+
     /**
      * allocate memory and fill with random numbers
      */
@@ -234,7 +234,7 @@ int main(int argc, char** argv) {
     }
     generate_random_values(array_64, number_of_values);
     uint64_t correct = aggregate_scalar(array_64, number_of_values);
-    cout <<"Generation done."<<endl; 
+    cout <<"Generation done."<<endl;
 
     /**
      * run several benchmarks on generated data
