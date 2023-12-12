@@ -8,7 +8,6 @@
 #include <string.h>
 #include <math.h>
 #include <functional>
-#include <map>
 #include <future>
 #include <thread>
 #include <vector>
@@ -16,23 +15,15 @@
 
 #include "gather/simd_variants/avx512/agg_avx512_64BitVariants.h"
 
-#define ITERATIONS 10
-/* Has to be divisible by 2 */
-#define MAX_CORES 8
+// ITERATIONS and MAX_CORES
+#include "parameters.h"
 
 using namespace std;
 
-struct measures {
-    uint64_t result;
-    double duration;
-    double throughput;
-    double mis;
-};
+#include "measures.h"
+multithreaded_measures scalar, linear, gather, seti, stream;
 
 typedef function<uint64_t(const uint64_t*,uint64_t, const uint32_t)> benchmark_function;
-
-typedef std::map<uint64_t, struct measures> multithreaded_measures;
-multithreaded_measures scalar, linear, gather, seti, stream;
 
 template< typename Function >
 std::thread* create_thread( const uint64_t tid, uint64_t* local_result, double* local_duration, bool* local_ready, std::shared_future< void >* sync_barrier, Function&& magic, benchmark_function func ) {

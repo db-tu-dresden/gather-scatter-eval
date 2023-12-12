@@ -11,17 +11,13 @@
 
 #include "gather/simd_variants/avx512/agg_avx512_32BitVariants.h"
 
-#define ITERATIONS 10
-
+// ITERATIONS and MAX_CORES
+#include "parameters.h"
 
 using namespace std;
 
-struct measures {
-    uint64_t result;
-    double duration;
-    double throughput;
-    double mis;
-} scalar, linear, gather, seti, indexed;
+#include "measures.h"
+struct measures scalar, linear, gather, seti, indexed;
 
 
 template <typename T>
