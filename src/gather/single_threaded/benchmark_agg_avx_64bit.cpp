@@ -171,16 +171,20 @@ int main(int argc, char** argv) {
         else {
             cout <<"Set - Stride with Size "<<stride_size<<" failed"<<endl;
         }
-      // writing results to file
-        result_file << stride_size << " " << stride_size * 8 << " "<<scalar.mis<<" "<<
-                                                                     scalar.throughput<<" "<<
-                                                                     linear.mis<<" "<<
-                                                                     linear.throughput<<" "<<
-                                                                     gather.mis<<" "<<
-                                                                     gather.throughput<<" "<<
-                                                                     seti.mis<<" "<<
-                                                                     seti.throughput<<endl;    }
-
+        // writing results to file
+        result_file
+			<< stride_size << " "
+			<< stride_size * 8 << " "
+			<< scalar.mis << " "
+			<< scalar.throughput << " "
+			<< linear.mis << " "
+			<< linear.throughput << " "
+			<< gather.mis << " "
+			<< gather.throughput << " "
+			<< seti.mis << " "
+			<< seti.throughput
+		<< endl;
+	}
     result_file.close();
 
 	cerr << "freeing array!" << endl;
