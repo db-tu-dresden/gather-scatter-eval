@@ -286,7 +286,7 @@ int main(int argc, char** argv) {
         // log_multithreaded_results( avx512_file, stride_size, "gather", gather );  /* Enable onle for single-file-logging! */
         // log_multithreaded_results( avx512_file, stride_size, "seti", seti );  /* Enable onle for single-file-logging! */
         /* Write all to one file */
-        log_multithreaded_results_per_file( "./data/512_32bits/results", stride_pow, { &scalar, &linear, &gather, &seti }, first_run );
+        log_multithreaded_results_per_file( "./data/512_32bits/results_" + std::to_string(p), stride_pow, { &scalar, &linear, &gather, &seti }, first_run );
         if ( first_run ) {
             first_run = false;
         }

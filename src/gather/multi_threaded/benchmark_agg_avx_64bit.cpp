@@ -280,7 +280,7 @@ int main(int argc, char** argv) {
         // log_multithreaded_results( result_file, stride_pow, "gather", gather );  /* Enable onle for single-file-logging! */
         // log_multithreaded_results( result_file, stride_pow, "seti", seti );  /* Enable onle for single-file-logging! */
         /* Write all to one file */
-        log_multithreaded_results_per_file( "./data/256_64bits/results", stride_pow, { &scalar, &linear, &gather, &seti }, first_run );
+        log_multithreaded_results_per_file( "./data/256_64bits/results_" + std::to_string(p), stride_pow, { &scalar, &linear, &gather, &seti }, first_run );
         if ( first_run ) {
             first_run = false;
         }
