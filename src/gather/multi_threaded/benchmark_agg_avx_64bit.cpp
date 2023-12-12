@@ -25,20 +25,7 @@ typedef function<uint64_t(const uint64_t*,uint64_t, const uint32_t)> benchmark_f
 #include "measures.h"
 multithreaded_measures scalar, linear, gather, seti;
 
-template< typename Function >
-std::thread* create_thread( const uint64_t tid, uint64_t* local_result, double* local_duration, bool* local_ready, std::shared_future< void >* sync_barrier, Function&& magic, benchmark_function func ) {
-    cpu_set_t cpuset;
-    CPU_ZERO( &cpuset );
-    CPU_SET( tid, &cpuset );
-    std::thread* t = new std::thread( std::forward< Function >( magic ), tid, local_result, local_duration, local_ready, sync_barrier, func );
-    int rc = pthread_setaffinity_np( t->native_handle(), sizeof( cpu_set_t ), &cpuset );
-    if (rc != 0) {
-        std::cerr << "Error calling pthread_setaffinity_np: " << rc << "\n";
-        exit( -10 );
-    }
-    return t;
-}
-
+#include "create_thread.cpp"
 #include "log_multithreaded_results.cpp"
 #include "generate_random_values.cpp"
 

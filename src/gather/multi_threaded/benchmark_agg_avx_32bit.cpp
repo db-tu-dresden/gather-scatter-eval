@@ -25,20 +25,7 @@ multithreaded_measures scalar, linear, gather, seti, stream;
 
 typedef function<uint64_t(const uint32_t*,uint64_t, const uint32_t)> benchmark_function;
 
-template< typename Function >
-std::thread* create_thread( const uint64_t tid, uint32_t* local_result, double* local_duration, bool* local_ready, std::shared_future< void >* sync_barrier, Function&& magic, benchmark_function func ) {
-    cpu_set_t cpuset;
-    CPU_ZERO( &cpuset );
-    CPU_SET( tid, &cpuset );
-    std::thread* t = new std::thread( std::forward< Function >( magic ), tid, local_result, local_duration, local_ready, sync_barrier, func );
-    int rc = pthread_setaffinity_np( t->native_handle(), sizeof( cpu_set_t ), &cpuset );
-    if (rc != 0) {
-        std::cerr << "Error calling pthread_setaffinity_np: " << rc << "\n";
-        exit( -10 );
-    }
-    return t;
-}
-
+#include "create_thread.cpp"
 void print_max_tput( std::ostream& log, multithreaded_measures& results ) {
     double curr_max = 0.0;
     size_t max_cores = 0;
