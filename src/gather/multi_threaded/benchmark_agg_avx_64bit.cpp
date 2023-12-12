@@ -40,28 +40,7 @@ std::thread* create_thread( const uint64_t tid, uint64_t* local_result, double* 
 }
 
 #include "log_multithreaded_results.cpp"
-
-template <typename T>
-void generate_random_values(T* array, uint64_t number) {
-  static_assert(is_integral<T>::value, "Data type is not integral.");
-  std::random_device rd;
-  std::mt19937::result_type seed = rd() ^ (
-          (std::mt19937::result_type)
-          std::chrono::duration_cast<std::chrono::seconds>(
-          std::chrono::system_clock::now().time_since_epoch()
-          ).count() +
-          (std::mt19937::result_type)
-          std::chrono::duration_cast<std::chrono::microseconds>(
-          std::chrono::high_resolution_clock::now().time_since_epoch()
-          ).count());
-
-  std::mt19937 gen(seed);
-  std::uniform_int_distribution<T> distrib(1, 6);
-
-  for (uint64_t j = 0; j < number; ++j) {
-    array[j] = distrib(gen);
-  }
-}
+#include "generate_random_values.cpp"
 
 bool benchmark(multithreaded_measures* res, uint64_t correct_result, const uint64_t* values, uint64_t n, const uint32_t stride, double GB, function<uint64_t(const uint64_t*,uint64_t, const uint32_t)> func) {
     for ( size_t core_cnt = 1; core_cnt <= MAX_CORES; core_cnt *= 2 ) { /* Run with 1, 2, 4, ... MAX_CORES cores */
