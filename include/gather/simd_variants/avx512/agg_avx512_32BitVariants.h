@@ -5,20 +5,7 @@
 #include <cstring>
 #include <cstdint>
 
-/**
- * @brief scalar variant
- *
- * @param array
- * @param number
- * @return uint64_t
- */
-
-uint64_t aggregate_scalar(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
-        uint64_t res = 0;
-        for (uint64_t i = 0; i < number; i++)
-            res += array[i];
-     return res;
-}
+#include "gather/aggregate_scalar.cpp"
 
 /**
  * @brief linear load avx512 variant
