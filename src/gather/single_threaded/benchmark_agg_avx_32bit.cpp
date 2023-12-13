@@ -1,5 +1,5 @@
-#include "common.cpp"
 #include "gather/simd_variants/avx/agg_avx_32BitVariants.h"
+#include "common.cpp"
 
 constexpr bool multi_threaded = false;
 constexpr bool avx512 = false;

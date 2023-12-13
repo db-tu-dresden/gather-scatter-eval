@@ -3,6 +3,7 @@
 
 #include <immintrin.h>
 #include <cstring>
+#include <cstdint>
 
 /**
  * @brief scalar variant
