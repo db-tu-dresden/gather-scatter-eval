@@ -131,40 +131,27 @@ int main_single_threaded(
 
 			measures& measurement = measurements[a];
 
-			cerr << "debug! "
-				<< label << " "
-				<< (strided ? "strided" : "not strided") << " with "
-				<< stride_pow << " "
-				<< &measurement
-			<< endl;
-
 			if (!strided) {
-				// those that cannot be strided will not run more than once,
-				// they immediately pass to the next aggregation method.
-				if (stride_pow != min_stride_pow) {
-					continue;
-				} else {
-					stride_size = 0; // will be ignored anyway, just for good measure
+				if (stride_pow == 1) {
+					if (benchmark(&measurement, correct, array, number_of_values, 0, GB, function)) {
+						cout << label << " done" << endl;
+					} else {
+						cout << label << " failed" << endl;
+					}
 				}
+			} else {
+				if (benchmark(&measurement, correct, array, number_of_values, stride_size, GB, function)) {
+					cout << label << " done" << endl;
+				} else {
+					cout << label << " failed" << endl;
+				}
+			}
 
-				cout << "running " << label << "... ";
-			} else {
-				// strided access evaluation using different strides
-				cout
-					<< "running " << label
-					<< " with stride 2**" << stride_pow
-					<< " == " << stride_size << "... ";
-			}
-			cerr << "bench" << endl;
-			if (benchmark(&measurement, correct, array, number_of_values, stride_size, GB, function)) {
-				cout << "done." << endl;
-			} else {
-				cout << "FAILED!" << endl;
-			}
 			result_file
 				<< " " << measurement.mis
 				<< " " << measurement.throughput;
 		}
+
 		result_file << endl;
 	}
     result_file.close();
