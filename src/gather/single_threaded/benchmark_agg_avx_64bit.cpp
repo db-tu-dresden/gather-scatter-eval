@@ -14,7 +14,7 @@ int main(int argc, const char** argv) {
 		{ aggregate_scalar,					"scalar",	false },
 		{ aggregate_linear_avx256,			"linear",	false },
 		{ aggregate_strided_gather_avx256,	"gather",	true },
-		{ aggregate_strided_set_avx512,		"seti",		true },
+		{ aggregate_strided_set_avx256,		"seti",		true },
 	};
 	return main_single_threaded<uint64_t>(
 		aggregators,

@@ -110,7 +110,7 @@ uint64_t aggregate_strided_gather_avx256(const uint32_t* array, uint64_t number,
  * @param stride
  * @return uint64_t
  */
-uint64_t aggregate_strided_set_avx512(const uint32_t* array, uint64_t number, const uint32_t stride) {
+uint64_t aggregate_strided_set_avx256(const uint32_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;
 
   tmp = _mm256_setzero_si256();
