@@ -2,10 +2,15 @@
 #define LOG_MULTITHREADED_RESULTS_CPP
 
 /* We anticipate the following order: scalar, linear, gather, seti */
-void log_multithreaded_results_per_file( std::string basename, const size_t stride_size, std::vector< multithreaded_measures* > results, bool clean ) {
+void log_multithreaded_results_per_file(
+	std::string basename,
+	const size_t stride_size,
+	std::vector< multithreaded_measures >& results,
+	bool clean
+) {
     std::vector< uint64_t > keys;
     /* Extract all keys */
-    for ( auto it = results[0]->begin(); it != results[0]->end(); ++it ) {
+    for ( auto it = results[0].begin(); it != results[0].end(); ++it ) {
         keys.push_back( it->first );
     }
 
@@ -24,7 +29,7 @@ void log_multithreaded_results_per_file( std::string basename, const size_t stri
         std::ofstream out( basename + "_" + std::to_string( key ) + "_cores.dat", std::ios_base::app );
         out << stride_size << " " << stride_size * 8;
         for ( auto r : results ) {
-            out << " " << (*r)[ key ].mis << " " << (*r)[ key ].throughput;
+            out << " " << r[ key ].mis << " " << r[ key ].throughput;
         }
         out << std::endl;
         out.close();
