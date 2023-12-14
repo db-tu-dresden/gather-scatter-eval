@@ -83,6 +83,7 @@ int main_single_threaded(
         cout << "Memory allocated - " << number_of_values << " values" << endl;
     } else {
         cout << "Memory not allocated" << endl;
+		exit(NO_MEMORY);
     }
     generate_random_values(array, number_of_values);
     uint64_t correct = aggregate_scalar(array, number_of_values);
