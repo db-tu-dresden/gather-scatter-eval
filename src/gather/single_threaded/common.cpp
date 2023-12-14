@@ -17,28 +17,13 @@
 
 using namespace std;
 
+#include "aggregation_type.h"
 #include "measures.h"
 #include "make_label.cpp"
 
 #include "generate_random_values.cpp"
 // template <ResultT> bool benchmark(...)
 #include "benchmark_single_threaded.cpp"
-
-template <class ResultT>
-using aggregation_function_t = uint64_t (*) (
-	const ResultT*,
-	uint64_t,
-	const uint32_t
-);
-
-template <class ResultT>
-struct aggregator {
-	aggregation_function_t<ResultT> function;
-	string label;
-	bool strided;
-};
-template <class ResultT>
-using aggregator_t = struct aggregator<ResultT>;
 
 template <class ResultT>
 int main_single_threaded(

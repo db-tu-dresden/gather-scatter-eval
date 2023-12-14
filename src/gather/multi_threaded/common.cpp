@@ -22,25 +22,7 @@
 
 using namespace std;
 
-template <class ResultT>
-using aggregation_function_t = uint64_t (*) (
-	const ResultT*,
-	uint64_t,
-	const uint32_t
-);
-
-template <class ResultT>
-struct aggregator {
-	aggregation_function_t<ResultT> function;
-	string label;
-	bool strided;
-};
-template <class ResultT>
-using aggregator_t = struct aggregator<ResultT>;
-
-template <class ResultT>
-using benchmark_function = aggregation_function_t<ResultT>;
-
+#include "aggregation_type.h"
 #include "measures.h"
 multithreaded_measures scalar, linear, gather, seti;
 
