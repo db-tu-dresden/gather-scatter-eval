@@ -22,6 +22,7 @@
 
 using namespace std;
 
+#include "allocate.cpp"
 #include "aggregation_type.h"
 #include "measures.h"
 multithreaded_measures scalar, linear, gather, seti;
@@ -143,8 +144,7 @@ int main_multi_threaded(
     /**
      * allocate memory and fill with random numbers
      */
-    ResultT *array;
-    array = (ResultT *) aligned_alloc(8 * sizeof(ResultT), number_of_values * sizeof (ResultT));
+    ResultT* array = allocate<ResultT>(number_of_values);
     if (array != NULL) {
         cout << "Memory allocated - " << number_of_values << " values" << endl;
     } else {
