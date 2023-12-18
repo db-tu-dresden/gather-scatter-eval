@@ -14,17 +14,17 @@
 #include <algorithm>
 
 #include "gather/simd_variants/avx/agg_avx_64BitVariants.h"
+#include "error_codes.h"
 
 // ITERATIONS and MAX_CORES
 #include "parameters.h"
-#include "error_codes.h"
-#include "make_label.cpp"
 
 using namespace std;
 
 #include "allocate.cpp"
 #include "aggregation_type.h"
 #include "measures.h"
+#include "make_label.cpp"
 multithreaded_measures scalar, linear, gather, seti;
 
 #include "create_thread.cpp"
@@ -132,10 +132,23 @@ int main_multi_threaded(
     // 27 --> 134 million integers --> 8GB
     // 26 --> 67 million integers --> 4GB
     uint64_t number_of_values = pow(2, data_size_log2);
+	cerr << "number_of_values: " << number_of_values << endl;
 
 
     // define max stride size (power of 2)
     size_t max_stride = 15;
+	cerr << "max_stride: " << max_stride << ", 2**max_stride: " << (1 << max_stride) << endl;
+
+	if (max_stride + 1 < data_size_log2) {
+		/* this stride is fine */
+	} else {
+		cerr
+			<< "Data Size is 2**" << data_size_log2 << " == " << (1<<data_size_log2)
+			<< " which does not allow the hardcoded maximum stride of "
+			<< "2**" << max_stride << " == " << (1<<max_stride) << "!"
+		<< endl;
+		return DATA_SIZE_TOO_LOW;
+	}
 
     //compute GB for number of values
     double GB = (((double)number_of_values*sizeof(ResultT)/(double)1024)/(double)1024)/(double)1024;
@@ -228,6 +241,6 @@ int main_multi_threaded(
 	cerr << "freeing array!" << endl;
     free(array);
 
-    return SUCCESS;
+	return SUCCESS;
 }
 
