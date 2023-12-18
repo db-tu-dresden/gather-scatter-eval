@@ -81,16 +81,12 @@ int main_single_threaded(
 	// measurement result structs
 	vector<struct measures> measurements;
 	measurements.assign(aggregators.size(), {0, 0, 0, 0});
-	//struct measures scalar, linear, gather, seti, extra_avx512;
 
     // open files to store runtime measurements
-	string result_filename = (
-		"./data/gather/"
-		+ make_label(data_size_log2, multi_threaded, avx512, bits64)
-		+ "_results.dat"
-	);
-    ofstream result_file;
-    result_file.open(result_filename);
+	string label = make_label(data_size_log2, multi_threaded, avx512, bits64);
+	string result_filename = "./data/gather/" + label + "_results.dat";
+	ofstream result_file;
+	result_file.open(result_filename);
 
 	if (result_file.good()) {
 		cout << "writing data to '" << result_filename << "'." << endl;
@@ -102,6 +98,7 @@ int main_single_threaded(
 
 	// note: the stride is the outer loop for the benefit of the output file,
 	// non-strided aggregation methods will still run only once.
+    bool first_run = true;
 	const int min_stride_pow = 1;
 	for (int stride_pow = min_stride_pow; stride_pow <= max_stride; stride_pow++) {
 		uint64_t stride_size = pow(2, stride_pow);
@@ -139,6 +136,10 @@ int main_single_threaded(
 		}
 
 		result_file << endl;
+
+		if (first_run) {
+			first_run = false;
+		}
 	}
     result_file.close();
 
