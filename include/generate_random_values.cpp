@@ -1,6 +1,10 @@
 #ifndef GENERATE_RANDOM_VALUES_CPP
 #define GENERATE_RANDOM_VALUES_CPP
 
+/** uses std::mt19937 seeded with std::random_device and the current time
+ * to write values from a std::uniform_int_distribution into
+ * all number fields of the array
+ */
 template <typename T>
 void generate_random_values(T* array, uint64_t number) {
   static_assert(is_integral<T>::value, "Data type is not integral.");

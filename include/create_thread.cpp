@@ -1,6 +1,13 @@
 #ifndef CREATE_THREAD_CPP
 #define CREATE_THREAD_CPP
 
+#include "aggregation_type.h"
+
+/** creates a std::thread with the given id, pointers to return thread data by,
+ * the passed sync_barrier and the aggregation func to be measured.
+ * the thread is pinned to the cpu with tid via pthread_setaffinity_np.
+ * returns the created thread.
+ */
 template< typename Function, class ResultT>
 std::thread* create_thread(
 	const uint64_t tid,

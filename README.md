@@ -1,9 +1,14 @@
 # gather-scatter-eval
 
 This contains some testing/benchmarking code for “gather” vector-instructions,
-which I (Anton Obersteiner) want to adapt for the XeonMAX processor.
+which was somewhat restructured but does still uses some very dubious structures,
+mostly a lot of `.cpp` files directly `#include`d in other `.cpp` files.
 
 ## rough structure
+### ./include/\*.h,\*.cpp
+These define types, templates and functions used by several benchmark files.
+See their comments for doumentation.
+
 ### ./include/gather/simd_variants/avx
 
 #### `agg_avx_($bits:32|64)BitVariants.h`

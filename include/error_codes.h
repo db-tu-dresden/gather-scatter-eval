@@ -1,6 +1,8 @@
 #ifndef GATHER_ERROR_CODES_H
 #define GATHER_ERROR_CODES_H
 
+/** enum for errors that may occur in executing any part of this project.
+ */
 enum gather_error_codes {
 	SUCCESS = 0,
 	NO_DATA_SIZE_GIVEN = 1,
