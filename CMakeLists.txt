@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.1)
 
 set( CMAKE_CXX_STANDARD 14 )
-set( CMAKE_CXX_FLAGS "-static -Wl,--whole-archive -lpthread -Wl,--no-whole-archive")
+set( CMAKE_CXX_FLAGS "-static -Wl,--whole-archive -lpthread -lnuma -Wl,--no-whole-archive")
 
 project(GATHER-SCATTER-EVAL)
 set(CMAKE_BINARY_DIR "bin")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-add_compile_options(-O3 -fno-tree-vectorize -march=knl -mavx2 -mavx -mavx512f -mavx512cd)
+add_compile_options(-O3 -fno-tree-vectorize -march=sapphirerapids -mavx2 -mavx -mavx512f -mavx512cd)
 #add_compile_options(-O3 -fno-tree-vectorize -mavx2 -mavx)
 
 # single threaded benchmarks
