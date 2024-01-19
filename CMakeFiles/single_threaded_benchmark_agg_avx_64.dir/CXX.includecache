@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/habich/github2/gather-scatter-eval/src/gather/single_threaded/benchmark_agg_avx_64bit.cpp
+stdio.h
+-
+stdlib.h
+-
+iostream
+-
+random
+-
+chrono
+-
+immintrin.h
+/home/habich/github2/gather-scatter-eval/src/gather/single_threaded/immintrin.h
+fstream
+-
+string.h
+-
+math.h
+-
+functional
+-
+gather/simd_variants/avx/agg_avx_64BitVariants.h
+/home/habich/github2/gather-scatter-eval/src/gather/single_threaded/gather/simd_variants/avx/agg_avx_64BitVariants.h
+
+include/gather/simd_variants/avx/agg_avx_64BitVariants.h
+immintrin.h
+-
+cstring
+-
+

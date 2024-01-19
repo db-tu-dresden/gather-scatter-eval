@@ -27,7 +27,7 @@ uint64_t aggregate_scalar(const uint64_t* array, uint64_t number, const uint32_t
  * @return int32_t 
  */
 
-uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
+uint64_t aggregate_linear_avx256_64(const uint64_t* array, uint64_t number, const uint32_t stride=0) {
   __m256i tmp, data;
   uint64_t r = 0;
   
@@ -43,7 +43,7 @@ uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const u
 }
 
 /**
- * @brief avx256 strided access variant  using gather instruction
+ * @brief avx256 block strided access variant using gather instruction
  * 
  * @param array 
  * @param number 
@@ -51,7 +51,7 @@ uint64_t aggregate_linear_avx256(const uint64_t* array, uint64_t number, const u
  * @return uint64_t 
  */
 
-uint64_t aggregate_strided_gather_avx256(const uint64_t* array, uint64_t number, const uint32_t stride) {
+uint64_t aggregate_blockstrided_gather_avx256_64(const uint64_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;
 
   tmp = _mm256_setzero_si256();
@@ -71,14 +71,14 @@ uint64_t aggregate_strided_gather_avx256(const uint64_t* array, uint64_t number,
 }
 
 /**
- * @brief avx/avx2 strided access variant using set instruction
+ * @brief avx/avx2 block strided access variant using set instruction
  *  
  * @param array 
  * @param number 
  * @param stride 
  * @return uint64_t 
  */
-uint64_t aggregate_strided_set_avx512(const uint64_t* array, uint64_t number, const uint32_t stride) {
+uint64_t aggregate_blockstrided_set_avx256_64(const uint64_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;
 
   tmp = _mm256_setzero_si256();

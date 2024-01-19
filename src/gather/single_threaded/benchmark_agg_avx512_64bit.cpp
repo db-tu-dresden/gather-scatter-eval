@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 
     // open files to store runtime measurements
      ofstream result_file;
-    result_file.open("./data/512_64bits/results.dat");
+    result_file.open("./data/gather/results_avx512_64bit.dat");
 
     // scalar variant
     if (benchmark(&scalar, correct, array_64, number_of_values, 0, GB, &aggregate_scalar)) {
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     }
 
     // avx512 linear load variant
-     if (benchmark(&linear, correct, array_64, number_of_values,0, GB, &aggregate_linear_avx512)) {
+     if (benchmark(&linear, correct, array_64, number_of_values,0, GB, &aggregate_linear_avx512_64)) {
         cout <<"Linear AVX512 done"<<endl;
     }
     else {
@@ -131,30 +131,27 @@ int main(int argc, char** argv) {
         uint64_t stride_size = pow(2, stride_pow);
 
         // strided access
-        if (benchmark(&gather, correct, array_64, number_of_values, stride_size, GB, &aggregate_strided_gather_avx512)) {
-            cout <<"Gather - Stride with Size "<<stride_size<<" done"<<endl;
+        if (benchmark(&gather, correct, array_64, number_of_values, stride_size, GB, &aggregate_blockstrided_gather_avx512_64)) {
+            cout <<"Block-Strided Gather with Size "<<stride_size<<" done"<<endl;
         }
         else {
-            cout <<"Gather - Stride with Size "<<stride_size<<" failed"<<endl;
+            cout <<"Block-Strided Gather with Size "<<stride_size<<" failed"<<endl;
         }
 
         // set instruction (strided access)
-         if (benchmark(&seti, correct, array_64, number_of_values, stride_size, GB, &aggregate_strided_set_avx512)) {
-            cout <<"Set - Stride with Size "<<stride_size<<" done"<<endl;
+         if (benchmark(&seti, correct, array_64, number_of_values, stride_size, GB, &aggregate_blockstrided_set_avx512_64)) {
+            cout <<"Block-Strided Set with Size "<<stride_size<<" done"<<endl;
         }
         else {
-            cout <<"Set - Stride with Size "<<stride_size<<" failed"<<endl;
+            cout <<"Block-Strided Set with Size "<<stride_size<<" failed"<<endl;
         }
         
 
         // writing results to file
-        result_file << stride_size << " " << stride_size * 8 << " "<<scalar.mis<<" "<<
+        result_file << stride_pow<<" "<<stride_size << " " << stride_size * 8 <<" "<<
                                                                      scalar.throughput<<" "<<
-                                                                     linear.mis<<" "<<
                                                                      linear.throughput<<" "<<
-                                                                     gather.mis<<" "<<
                                                                      gather.throughput<<" "<< 
-                                                                     seti.mis<<" "<<
                                                                      seti.throughput<<endl;
     }
 

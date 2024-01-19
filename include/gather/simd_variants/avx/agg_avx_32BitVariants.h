@@ -27,7 +27,7 @@ uint32_t aggregate_scalar(const uint32_t* array, uint64_t number, const uint32_t
  * @return int32_t 
  */
 
-uint64_t aggregate_stream_linear_avx256(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
+uint64_t aggregate_stream_linear_avx256_32(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
   __m256i tmp, data;
   uint64_t r = 0;
   
@@ -53,7 +53,7 @@ uint64_t aggregate_stream_linear_avx256(const uint32_t* array, uint64_t number, 
  * @return int32_t 
  */
 
-uint64_t aggregate_linear_avx256(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
+uint64_t aggregate_linear_avx256_32(const uint32_t* array, uint64_t number, const uint32_t stride=0) {
   __m256i tmp, data;
   uint64_t r = 0;
   
@@ -81,7 +81,7 @@ uint64_t aggregate_linear_avx256(const uint32_t* array, uint64_t number, const u
  * @return uint64_t 
  */
 
-uint64_t aggregate_strided_gather_avx256(const uint32_t* array, uint64_t number, const uint32_t stride) {
+uint64_t aggregate_blockstrided_gather_avx256_32(const uint32_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;
 
   tmp = _mm256_setzero_si256();
@@ -110,7 +110,7 @@ uint64_t aggregate_strided_gather_avx256(const uint32_t* array, uint64_t number,
  * @param stride 
  * @return uint64_t 
  */
-uint64_t aggregate_strided_set_avx512(const uint32_t* array, uint64_t number, const uint32_t stride) {
+uint64_t aggregate_blockstrided_set_avx256_32(const uint32_t* array, uint64_t number, const uint32_t stride) {
   __m256i tmp, data;
 
   tmp = _mm256_setzero_si256();

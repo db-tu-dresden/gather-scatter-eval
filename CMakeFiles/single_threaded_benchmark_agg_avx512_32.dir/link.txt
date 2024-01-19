@@ -1,0 +1,1 @@
+/usr/bin/c++ -static -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -rdynamic CMakeFiles/single_threaded_benchmark_agg_avx512_32.dir/src/gather/single_threaded/benchmark_agg_avx512_32bit.cpp.o -o bin/single_threaded_benchmark_agg_avx512_32 
