@@ -104,7 +104,7 @@ int main_single_threaded(
 		uint64_t stride_size = pow(2, stride_pow);
 
 		result_file
-			<< stride_size << " "
+			<< stride_pow << " "
 			<< stride_size * 8;
 
 		for (int a = 0; a < aggregators.size(); a++) {

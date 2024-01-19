@@ -19,9 +19,9 @@ int main(int argc, const char** argv) {
 
 	const vector<aggregator_t<ResultT>> aggregators	{
 		{ aggregate_scalar,					"scalar",	false },
-		{ aggregate_linear_avx512,			"linear",	false },
-		{ aggregate_strided_gather_avx512,	"gather",	true },
-		{ aggregate_strided_set_avx512,		"seti",		true },
+		{ aggregate_linear_avx512_64,			"linear",	false },
+		{ aggregate_blockstrided_gather_avx512_64,	"gather",	true },
+		{ aggregate_fullstrided_gather_avx512_64,		"seti",		true },
 	};
 	return main_multi_threaded<ResultT>(
 		aggregators,
